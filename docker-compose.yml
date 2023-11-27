@@ -22,7 +22,7 @@ services:
     ports:
       - $BACK_PORT:$BACK_PORT
     volumes:
-      - .:/home/node/app
+      - ./back:/home/node/app
 
   react:
     depends_on:

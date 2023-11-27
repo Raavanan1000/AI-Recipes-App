@@ -6,32 +6,32 @@ import { MdSend } from "react-icons/md";
 import { replaceProfanities } from "no-profanity";
 import { davinci } from "../utils/davinci";
 
-const gptModel = ["gpt-3.5-turbo", "gpt-4"];
-const template = [
-  {
-    title: "Recipe chicken",
-    prompt: "Recipe chicken with chicken and vegetables",
-  },
-  {
-    title: "Recipe chicken with sauce",
-    prompt: "Recipe chicken with chicken and sauce",
-  },
-  {
-    title: "Recipe vegetables",
-    prompt: "Recipe vegetables with vegetables and sauce",
-  },
-  {
-    title: "Recipe noodles",
-    prompt: "Recipe noodles with noodles and sauce",
-  },
-];
-
 const ChatView = () => {
+  const [recommendations, setRecommendations] = useState([
+    {
+      title: "Recipe chicken",
+      prompt: "Recipe chicken with chicken and vegetables",
+    },
+    {
+      title: "Recipe chicken with sauce",
+      prompt: "Recipe chicken with chicken and sauce",
+    },
+    {
+      title: "Recipe vegetables",
+      prompt: "Recipe vegetables with vegetables and sauce",
+    },
+    {
+      title: "Recipe noodles",
+      prompt: "Recipe noodles with noodles and sauce",
+    },
+  ]);
+
   const messagesEndRef = useRef();
   const inputRef = useRef();
   const [formValue, setFormValue] = useState("");
   const [thinking, setThinking] = useState(false);
-  const [gpt, setGpt] = useState(gptModel[0]);
+  const [takeIntoAccountAllergies, setTakeIntoAccountAllergies] =
+    useState(true);
   const [messages, addMessage] = useContext(ChatContext);
 
   const scrollToBottom = () => {
@@ -57,7 +57,6 @@ const ChatView = () => {
   };
 
   /**
-   * Sends our prompt to our API and get response to our request from openai.
    *
    * @param {Event} e - The submit event of the form.
    */
@@ -67,17 +66,14 @@ const ChatView = () => {
     const cleanPrompt = replaceProfanities(formValue);
 
     const newMsg = cleanPrompt;
-    const gptVersion = gpt;
 
     setThinking(true);
     setFormValue("");
     updateMessage(newMsg, false);
-    console.log(gptVersion);
 
     const key = "";
     try {
-      const LLMresponse = await davinci(cleanPrompt, key, gptVersion);
-      //const data = response.data.choices[0].message.content;
+      const LLMresponse = await davinci(cleanPrompt, key);
       LLMresponse && updateMessage(LLMresponse, true);
     } catch (err) {
       window.alert(`Error: ${err} please try again later`);
@@ -88,21 +84,14 @@ const ChatView = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      // 👇 Get input value
       sendMessage(e);
     }
   };
 
-  /**
-   * Scrolls the chat area to the bottom when the messages array is updated.
-   */
   useEffect(() => {
     scrollToBottom();
   }, [messages, thinking]);
 
-  /**
-   * Focuses the TextArea input to when the component is first rendered.
-   */
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -111,16 +100,16 @@ const ChatView = () => {
     <main className="relative flex flex-col h-screen p-1 overflow-hidden dark:bg-light-grey">
       <div className="mx-auto my-4 tabs tabs-boxed w-fit">
         <a
-          onClick={() => setGpt(gptModel[0])}
-          className={`${gpt == gptModel[0] && "tab-active"} tab`}
+          onClick={() => setTakeIntoAccountAllergies(true)}
+          className={`${takeIntoAccountAllergies && "tab-active"} tab`}
         >
           Take into account allergies
         </a>
         <a
-          onClick={() => setGpt(gptModel[1])}
-          className={`${gpt == gptModel[1] && "tab-active"} tab`}
+          onClick={() => setTakeIntoAccountAllergies(false)}
+          className={`${!takeIntoAccountAllergies && "tab-active"} tab`}
         >
-          {"Don't take into account allergies"}
+          {`Don't take into account allergies`}
         </a>
       </div>
 
@@ -133,7 +122,7 @@ const ChatView = () => {
           <div className="flex my-2">
             <div className="w-screen overflow-hidden">
               <ul className="grid grid-cols-2 gap-2 mx-10">
-                {template.map((item, index) => (
+                {recommendations.map((item, index) => (
                   <li
                     onClick={() => setFormValue(item.prompt)}
                     key={index}
@@ -160,7 +149,7 @@ const ChatView = () => {
           value={"Chat"}
           className="w-full sm:w-40 select select-bordered join-item"
         >
-          <option>{"Chat"}</option>
+          <option>{"Ask recipe"}</option>
         </select>
         <div className="flex items-stretch justify-between w-full">
           <textarea

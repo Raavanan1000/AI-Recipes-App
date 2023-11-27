@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import { createContext } from 'react';
-import useMessageCollection from '../hooks/useMessageCollection';
+import PropTypes from "prop-types";
+import { createContext } from "react";
+import useMessageCollection from "../hooks/useMessageCollection";
 
 /**
  * ChatContext is a context object that is used to share collection of messages

@@ -7,8 +7,6 @@ import Modal from "./Modal";
 import Setting from "./Setting";
 
 /**
- * A sidebar component that displays a list of nav items and a toggle
- * for switching between light and dark modes.
  *
  * @param {Object} props - The properties for the component.
  */
@@ -56,7 +54,7 @@ const SideBar = () => {
         <li>
           <a className="border border-slate-500" onClick={clear}>
             <MdDelete size={15} />
-            <p className={`${!open && "hidden"}`}>Clear chat</p>
+            <p className={`${!open && "hidden"}`}>Clear</p>
           </a>
         </li>
       </ul>

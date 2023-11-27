@@ -1,7 +1,32 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:14.8-alpine3.17
+    container_name: postgresdb_container
+    env_file: .env
+    environment:
+      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    volumes:
+      - data_postgres:/var/lib/postgresql/data
+
+  node:
+    image: node:18.18.0-alpine3.17
+    container_name: node_service
+    user: node
+    working_dir: /home/node/app
+    tty: true
+    stdin_open: true
+    ports:
+      - $BACK_PORT:$BACK_PORT
+    volumes:
+      - .:/home/node/app
+
   react:
+    depends_on:
+      - node
     image: node:18.18.0-alpine3.17
     container_name: react_service
     user: node
@@ -9,6 +34,9 @@ services:
     tty: true
     stdin_open: true
     ports:
-      - 3000:5173
+      - $FRONT_PORT:5173
     volumes:
       - ./front:/home/node/app
+
+volumes:
+  data_postgres:

@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+<<<<<<< Updated upstream
 import { useUser } from "../context/userContext";
+=======
+>>>>>>> Stashed changes
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3001",
@@ -42,12 +45,15 @@ const apiClient = {
 };
 
 export default function useApi() {
+<<<<<<< Updated upstream
   const user = useUser();
+=======
+>>>>>>> Stashed changes
   const [token, setToken] = useState(() => localStorage.getItem("accessToken"));
 
   useEffect(() => {
     setToken(localStorage.getItem("accessToken"));
-  }, [user]);
+  }, []);
 
   function login(email, password) {
     return apiClient.post("auth/login", { email, password });
@@ -66,11 +72,11 @@ export default function useApi() {
   }
 
   function searchRecipe(search) {
-    return apiClient.get(`recipe/${search}`, token);
+    return apiClient.get(`recipes/${search}`, token);
   }
 
-  function getRecipe(query) {
-    return apiClient.post(`recipe/`, { query: query }, token);
+  function getRecipes(query) {
+    return apiClient.post(`recipes/`, { query: query }, token);
   }
 
   function getLoggedInUser() {
@@ -83,7 +89,7 @@ export default function useApi() {
     getFavorites,
     deleteFavorite,
     searchRecipe,
-    getRecipe,
     getLoggedInUser,
+    getRecipes,
   };
 }

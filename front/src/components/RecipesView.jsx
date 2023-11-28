@@ -5,6 +5,7 @@ import { replaceProfanities } from "no-profanity";
 import { davinci } from "../utils/davinci";
 import Recipe from "./Recipe";
 import { useRecipeContext } from "../context/recipeContext";
+import useApi from "../hooks/useApi";
 
 const RecipesView = () => {
   const [recommendations, setRecommendations] = useState([
@@ -30,6 +31,19 @@ const RecipesView = () => {
   const [formValue, setFormValue] = useState("");
   const [loading, isLoading] = useState(false);
   const { recipes, setRecipes } = useRecipeContext();
+
+  const api = useApi();
+
+  const getRecipes = async () => {
+    console.log("getRecipes");
+    const response = await api.getRecipes();
+    console.log("response", response);
+    setRecipes(response.data);
+  };
+
+  useEffect(() => {
+    getRecipes();
+  }, []);
 
   const [takeIntoAccountAllergies, setTakeIntoAccountAllergies] =
     useState(true);

@@ -35,6 +35,7 @@ export default function Recipe({ recipe, index }) {
     <Card
       sx={{
         width: expanded ? "85%" : 345,
+        height: expanded ? "100%" : "34rem",
         backgroundColor: expanded ? orange[300] : "white",
       }}
     >
@@ -44,22 +45,22 @@ export default function Recipe({ recipe, index }) {
             {index + 1}
           </Avatar>
         }
-        title={recipe.Name}
+        title={
+          recipe?.name?.slice(0, 20) + (recipe?.name?.length > 20 ? "..." : "")
+        }
         titleTypographyProps={{ variant: "h6" }}
       />
       <CardMedia
         component="img"
-        height="194"
+        sx={{
+          height: 345,
+          objectFit: "cover",
+        }}
         image={
-          recipe.Image || "https://source.unsplash.com/random/345x194/?food"
+          recipe.image || "https://source.unsplash.com/random/345x194/?food"
         }
         alt="food"
       />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {recipe.Description}
-        </Typography>
-      </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="Add to favorites">
           <FavoriteIcon />
@@ -73,13 +74,20 @@ export default function Recipe({ recipe, index }) {
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {expanded
+            ? recipe?.description
+            : recipe?.description?.slice(0, 92) + "..."}
+        </Typography>
+      </CardContent>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Ingredients : </Typography>
           <Typography paragraph>
-            {recipe.Ingredients.map((Ingredient, index) => (
+            {recipe?.ingredients?.map((ingredient, index) => (
               <Typography key={index} paragraph>
-                {"- " + Ingredient}
+                {"- " + ingredient}
               </Typography>
             ))}
           </Typography>

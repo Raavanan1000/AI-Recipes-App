@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { OpenAI } from 'openai';
 
+const openai = new OpenAI();
 @Injectable()
 export class RecipesService {
   constructor(private prisma: PrismaService) {}

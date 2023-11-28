@@ -144,7 +144,7 @@ const RecipesView = () => {
       {recipes?.length > 0 && (
         <div className="flex flex-col mt-12 justify-center items-center">
           <div className="text-2xl mb-12 text-center font-bold text-slate-900">
-            Recipes recommened for you based on your search
+            Recipes recommeded for you based on your search
           </div>
           <p className="text-xl mb-10">
             {"Searched : " + localStorage.getItem("recipeSearch")}

@@ -6,7 +6,7 @@ export class RecipesService {
   constructor(private prisma: PrismaService) {}
 
   async searchRecipe(query: string) {
-    return await this.prisma.recipe.findFirst();
+    return await this.prisma.recipe.findMany();
   }
 
   async findOne(id: string) {

@@ -14,4 +14,8 @@ export class RecipesService {
       where: { id: id },
     });
   }
+
+  searchByCurrentSeason() {
+    return this.prisma.recipe.findMany({ take: 4 });
+  }
 }

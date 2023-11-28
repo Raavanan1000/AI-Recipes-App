@@ -6,27 +6,9 @@ import { davinci } from "../utils/davinci";
 import Recipe from "./Recipe";
 import { useRecipeContext } from "../context/recipeContext";
 import useApi from "../hooks/useApi";
+import SeasonRecipes from "./SeasonRecipes";
 
 const RecipesView = () => {
-  const [recommendations, setRecommendations] = useState([
-    {
-      title: "Recipe chicken",
-      prompt: "Recipe chicken with chicken and vegetables",
-    },
-    {
-      title: "Recipe chicken with sauce",
-      prompt: "Recipe chicken with chicken and sauce",
-    },
-    {
-      title: "Recipe vegetables",
-      prompt: "Recipe vegetables with vegetables and sauce",
-    },
-    {
-      title: "Recipe noodles",
-      prompt: "Recipe noodles with noodles and sauce",
-    },
-  ]);
-
   const inputRef = useRef();
   const [formValue, setFormValue] = useState("");
   const [loading, isLoading] = useState(false);
@@ -105,26 +87,7 @@ const RecipesView = () => {
             </a>
           </div>
 
-          <section className="flex flex-col flex-grow w-full px-4 overflow-y-scroll sm:px-10 md:px-32">
-            <div className="flex my-2">
-              <div className="w-screen overflow-hidden">
-                <ul className="grid grid-cols-2 gap-2 mx-10">
-                  {recommendations.map((item, index) => (
-                    <li
-                      onClick={() => setFormValue(item.prompt)}
-                      key={index}
-                      className="p-6 border rounded-lg border-slate-300 hover:border-slate-500"
-                    >
-                      <p className="text-base font-semibold">{item.title}</p>
-                      <p className="text-sm">{item.prompt}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {loading && <Thinking />}
-          </section>
+          <SeasonRecipes withAllergies={takeIntoAccountAllergies} />
           <form
             className="flex flex-col px-10 mb-2 md:px-32 join sm:flex-row"
             onSubmit={sendMessage}

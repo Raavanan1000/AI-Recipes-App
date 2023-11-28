@@ -19,6 +19,7 @@ export default function UserLoader({ children }) {
         setLoading(false);
       } catch (error) {
         setError(error);
+        setLoading(false);
       }
     }
     getUser();

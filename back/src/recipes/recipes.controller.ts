@@ -11,6 +11,11 @@ export class RecipesController {
     return this.recipesService.searchRecipe(query);
   }
 
+  @Get('season')
+  async searchByCurrentSeason() {
+    return await this.recipesService.searchByCurrentSeason();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.recipesService.findOne(id);

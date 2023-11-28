@@ -75,6 +75,13 @@ export default function useApi() {
     return apiClient.get("users/current", token);
   }
 
+  function getRecipesByCurrentSeason(withAllergies = false) {
+    const url = withAllergies
+      ? "recipes/season?withAllergies=true"
+      : "recipes/season";
+    return apiClient.get(url, token);
+  }
+
   return {
     login,
     addFavorites,
@@ -83,5 +90,6 @@ export default function useApi() {
     searchRecipe,
     getLoggedInUser,
     getRecipes,
+    getRecipesByCurrentSeason,
   };
 }

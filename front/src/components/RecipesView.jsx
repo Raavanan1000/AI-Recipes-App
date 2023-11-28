@@ -8,7 +8,7 @@ import { davinci } from "../utils/davinci";
 import Recipe from "./Recipe";
 import { useRecipeContext } from "../context/recipeContext";
 
-const ChatView = () => {
+const RecipesView = () => {
   const [recommendations, setRecommendations] = useState([
     {
       title: "Recipe chicken",
@@ -46,17 +46,8 @@ const ChatView = () => {
     setRecipes(newRecipes);
   };
 
-  const updateMessage = (newValue, ai = false, selected = "") => {
-    const id = Date.now() + Math.floor(Math.random() * 1000000);
-    const newMsg = {
-      id: id,
-      createdAt: Date.now(),
-      text: newValue,
-      ai: ai,
-      selected: `${selected}`,
-    };
-
-    addMessage(newMsg);
+  const updateRecipeSearch = (recipeSearch) => {
+    localStorage.setItem("recipeSearch", recipeSearch);
   };
 
   const sendMessage = async (e) => {
@@ -66,7 +57,7 @@ const ChatView = () => {
 
     setThinking(true);
     setFormValue("");
-    updateMessage(cleanPrompt, false);
+    updateRecipeSearch(cleanPrompt);
 
     const key = "";
     try {
@@ -175,6 +166,9 @@ const ChatView = () => {
           <div className="text-2xl mb-12 text-center font-bold text-slate-900">
             Recipes recommened for you based on your search
           </div>
+          <p className="text-xl mb-10">
+            {"Searched : " + localStorage.getItem("recipeSearch")}
+          </p>
           <div className="flex w-full h-full justify-center items-center gap-3 flex-wrap">
             {recipes?.map((recipe, index) => (
               <Recipe key={index} recipe={recipe} index={index} />
@@ -186,4 +180,4 @@ const ChatView = () => {
   );
 };
 
-export default ChatView;
+export default RecipesView;

@@ -26,7 +26,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function Recipe({ recipe, key }) {
+export default function Recipe({ recipe, index }) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -34,11 +34,13 @@ export default function Recipe({ recipe, key }) {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card
+      sx={{ maxWidth: 345, backgroundColor: expanded ? orange[300] : "white" }}
+    >
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: orange[600] }} aria-label="recipe">
-            {key}
+            {index + 1}
           </Avatar>
         }
         title={recipe.Name}
@@ -93,5 +95,5 @@ Recipe.propTypes = {
     Ingredients: Array,
     Method: Array,
   },
-  key: Number,
+  index: Number,
 };

@@ -1,19 +1,16 @@
-import { useState, useEffect, useContext } from "react";
-import { MdClose, MdMenu, MdDelete } from "react-icons/md";
-import { ChatContext } from "../context/chatContext";
+import { useState, useEffect } from "react";
+import { MdClose, MdMenu, MdOutlineRestartAlt } from "react-icons/md";
 import bot from "../assets/logo.svg";
 import ToggleTheme from "./ToggleTheme";
 import Modal from "./Modal";
 import Setting from "./Setting";
+import { useRecipeContext } from "../context/recipeContext";
 
-/**
- *
- * @param {Object} props - The properties for the component.
- */
 const SideBar = () => {
   const [open, setOpen] = useState(true);
-  const [, , clearChat] = useContext(ChatContext);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { recipes, setRecipes } = useRecipeContext();
 
   function handleResize() {
     window.innerWidth <= 720 ? setOpen(false) : setOpen(true);
@@ -24,7 +21,8 @@ const SideBar = () => {
   }, []);
 
   function clear() {
-    clearChat();
+    localStorage.removeItem("recipeSearch");
+    setRecipes([]);
   }
 
   return (
@@ -53,8 +51,10 @@ const SideBar = () => {
       <ul className="w-full menu rounded-box">
         <li>
           <a className="border border-slate-500" onClick={clear}>
-            <MdDelete size={15} />
-            <p className={`${!open && "hidden"}`}>Clear</p>
+            <MdOutlineRestartAlt size={15} />
+            <p className={`${!open && "hidden"}`}>
+              {!recipes.length > 0 ? "Ask recipe" : "Reset"}
+            </p>
           </a>
         </li>
       </ul>

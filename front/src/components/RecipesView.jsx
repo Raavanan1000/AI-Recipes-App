@@ -2,11 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import Thinking from "./Thinking";
 import { MdSend } from "react-icons/md";
 import { replaceProfanities } from "no-profanity";
-import { davinci } from "../utils/davinci";
 import Recipe from "./Recipe";
 import { useRecipeContext } from "../context/recipeContext";
 import useApi from "../hooks/useApi";
 import SeasonRecipes from "./SeasonRecipes";
+import { wait } from "../utils/tools";
 
 const RecipesView = () => {
   const inputRef = useRef();
@@ -17,22 +17,21 @@ const RecipesView = () => {
   const api = useApi();
 
   const getRecipes = async () => {
-    console.log("getRecipes");
-    const response = await api.getRecipes();
-    console.log("response", response);
-    setRecipes(response.data);
-  };
+    isLoading(true);
+    await wait(3000);
 
-  useEffect(() => {
-    getRecipes();
-  }, []);
+    try {
+      const response = await api.getRecipes(formValue);
+      setRecipes(response.data);
+    } catch (err) {
+      window.alert(`Error: ${err} please try again later`);
+    } finally {
+      isLoading(false);
+    }
+  };
 
   const [takeIntoAccountAllergies, setTakeIntoAccountAllergies] =
     useState(true);
-
-  const updateRecipes = (newRecipes) => {
-    setRecipes(newRecipes);
-  };
 
   const updateRecipeSearch = (recipeSearch) => {
     localStorage.setItem("recipeSearch", recipeSearch);
@@ -41,16 +40,15 @@ const RecipesView = () => {
   const sendMessage = async (e) => {
     e.preventDefault();
 
+    isLoading(true);
+
     const cleanPrompt = replaceProfanities(formValue);
 
-    isLoading(true);
     setFormValue("");
     updateRecipeSearch(cleanPrompt);
 
-    const key = "";
     try {
-      const LLMresponse = await davinci(cleanPrompt, key);
-      LLMresponse && updateRecipes(LLMresponse, true);
+      getRecipes();
     } catch (err) {
       window.alert(`Error: ${err} please try again later`);
     }
@@ -85,9 +83,12 @@ const RecipesView = () => {
             >
               {`Don't take into account allergies`}
             </a>
+            sd
           </div>
 
-          <SeasonRecipes withAllergies={takeIntoAccountAllergies} />
+          {!loading && (
+            <SeasonRecipes withAllergies={takeIntoAccountAllergies} />
+          )}
           <form
             className="flex flex-col px-10 mb-2 md:px-32 join sm:flex-row"
             onSubmit={sendMessage}

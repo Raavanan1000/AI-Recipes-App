@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import useAuth from "./useAuth";
+import { useUser } from "../context/userContext";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3001",
@@ -42,7 +42,7 @@ const apiClient = {
 };
 
 export default function useApi() {
-  const { user } = useAuth();
+  const user = useUser();
   const [token, setToken] = useState(() => localStorage.getItem("accessToken"));
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function useApi() {
   }, [user]);
 
   function login(email, password) {
-    return apiClient.post("auth/login", { email, password }, token);
+    return apiClient.post("auth/login", { email, password });
   }
 
   function addFavorites(data) {
@@ -73,6 +73,10 @@ export default function useApi() {
     return apiClient.post(`recipe/`, { query: query }, token);
   }
 
+  function getLoggedInUser() {
+    return apiClient.get("users/current", token);
+  }
+
   return {
     login,
     addFavorites,
@@ -80,5 +84,6 @@ export default function useApi() {
     deleteFavorite,
     searchRecipe,
     getRecipe,
+    getLoggedInUser,
   };
 }

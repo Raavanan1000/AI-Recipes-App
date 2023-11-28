@@ -2,11 +2,6 @@ import PropTypes from "prop-types";
 import useDarkMode from "../hooks/useDarkMode";
 import { MdOutlineNightlight, MdOutlineWbSunny } from "react-icons/md";
 
-/**
- *
- * @param {Object} props - The properties for the component.
- * @param {boolean} props.open - Whether the sidebar is open or not.
- */
 const ToggleTheme = (props) => {
   const [theme, setTheme] = useDarkMode();
 

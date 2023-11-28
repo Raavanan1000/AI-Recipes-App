@@ -23,6 +23,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
+    "axios": "^1.6.2",
     "langchain": "^0.0.155",
     "moment": "^2.29.4",
     "no-profanity": "^1.5.1",

@@ -69,8 +69,8 @@ export default function useApi() {
     return apiClient.get(`recipe/${search}`, token);
   }
 
-  function getRecipe(data) {
-    return apiClient.post(`recipe/`, { ...data }, token);
+  function getRecipe(query) {
+    return apiClient.post(`recipe/`, { query: query }, token);
   }
 
   return {

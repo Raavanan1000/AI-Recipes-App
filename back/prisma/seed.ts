@@ -1,10 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import recipes from './recipes';
 
 const prisma = new PrismaClient();
 
 async function resetDB() {
   await prisma.user.deleteMany({});
+  await prisma.recipe.deleteMany({});
 }
 
 async function insertUsers() {
@@ -36,9 +38,14 @@ async function insertUsers() {
   });
 }
 
+async function insertRecipes() {
+  await prisma.recipe.createMany({ data: recipes });
+}
+
 async function main() {
   await resetDB();
   await insertUsers();
+  await insertRecipes();
 }
 
 main()

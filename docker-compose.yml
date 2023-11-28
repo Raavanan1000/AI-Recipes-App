@@ -37,6 +37,13 @@ services:
       - $FRONT_PORT:5173
     volumes:
       - ./front:/home/node/app
+  
+  adminer:
+    depends_on:
+      - postgres
+    image: adminer:4.8.1
+    ports:
+      - 8080:8080
 
 volumes:
   data_postgres:

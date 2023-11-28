@@ -11,14 +11,33 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  firstname String
-  lastname  String
-  email     String   @unique
-  password  String
-  role     Role
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String            @id @default(uuid())
+  firstname  String
+  lastname   String
+  email      String            @unique
+  password   String
+  role       Role
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  favourites FavouriteRecipe[]
+}
+
+model Recipe {
+  id              String            @id @default(uuid())
+  name            String
+  description     String
+  ingredients     String[]
+  steps           String[]
+  image           String
+  FavouriteRecipe FavouriteRecipe[]
+}
+
+model FavouriteRecipe {
+  id       String @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id])
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  userId   String
+  recipeId String
 }
 
 enum Role {

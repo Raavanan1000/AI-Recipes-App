@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Thinking from "./Thinking";
 import { MdSend } from "react-icons/md";
-import { replaceProfanities } from "no-profanity";
 import Recipe from "./Recipe";
 import { useRecipeContext } from "../context/recipeContext";
 import useApi from "../hooks/useApi";
@@ -16,10 +15,12 @@ const RecipesView = () => {
 
   const api = useApi();
 
-  const getRecipes = async () => {
+  const searchRecipes = async () => {
     isLoading(true);
+
     await wait(3000);
 
+    updateRecipeSearch(formValue);
     try {
       const response = await api.getRecipes(formValue);
       setRecipes(response.data);
@@ -37,28 +38,9 @@ const RecipesView = () => {
     localStorage.setItem("recipeSearch", recipeSearch);
   };
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
-
-    isLoading(true);
-
-    const cleanPrompt = replaceProfanities(formValue);
-
-    setFormValue("");
-    updateRecipeSearch(cleanPrompt);
-
-    try {
-      getRecipes();
-    } catch (err) {
-      window.alert(`Error: ${err} please try again later`);
-    }
-
-    isLoading(false);
-  };
-
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      sendMessage(e);
+      searchRecipes();
     }
   };
 
@@ -68,6 +50,13 @@ const RecipesView = () => {
 
   return (
     <main className="w-screen flex flex-col h-screen p-1 overflow-scroll dark:bg-light-grey">
+      {loading && (
+        <>
+          <div className="flex h-screen justify-center items-center">
+            <Thinking />
+          </div>
+        </>
+      )}
       {!recipes?.length > 0 && !loading && (
         <>
           <div className="mx-auto my-4 tabs tabs-boxed w-fit">
@@ -83,7 +72,6 @@ const RecipesView = () => {
             >
               {`Don't take into account allergies`}
             </a>
-            sd
           </div>
 
           {!loading && (
@@ -91,7 +79,7 @@ const RecipesView = () => {
           )}
           <form
             className="flex flex-col px-10 mb-2 md:px-32 join sm:flex-row"
-            onSubmit={sendMessage}
+            onSubmit={searchRecipes}
           >
             <select
               value={"Chat"}

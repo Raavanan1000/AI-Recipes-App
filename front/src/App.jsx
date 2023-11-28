@@ -1,18 +1,15 @@
-import { ChatContextProvider } from "./context/chatContext";
-import SideBar from "./components/SideBar";
-import { RecipeContextProvider } from "./context/recipeContext";
-import RecipesView from "./components/RecipesView";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
 
 const App = () => {
   return (
-    <ChatContextProvider>
-      <RecipeContextProvider>
-        <div className="flex transition duration-500 ease-in-out">
-          <SideBar />
-          <RecipesView />
-        </div>
-      </RecipeContextProvider>
-    </ChatContextProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="login" element={<LoginPage />} />
+        <Route path="home" element={<HomePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

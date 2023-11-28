@@ -1,9 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-<<<<<<< Updated upstream
-import { useUser } from "../context/userContext";
-=======
->>>>>>> Stashed changes
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3001",
@@ -45,10 +41,6 @@ const apiClient = {
 };
 
 export default function useApi() {
-<<<<<<< Updated upstream
-  const user = useUser();
-=======
->>>>>>> Stashed changes
   const [token, setToken] = useState(() => localStorage.getItem("accessToken"));
 
   useEffect(() => {

@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { orange } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PropTypes from "prop-types";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -98,11 +99,12 @@ export default function Recipe({ recipe, index }) {
 }
 
 Recipe.propTypes = {
-  recipe: {
-    Name: String,
-    Description: String,
-    Ingredients: Array,
-    Method: Array,
-  },
-  index: Number,
+  recipe: PropTypes.shape({
+    name: PropTypes.string,
+    image: PropTypes.string,
+    description: PropTypes.string,
+    ingredients: PropTypes.arrayOf(PropTypes.string),
+    steps: PropTypes.arrayOf(PropTypes.string),
+  }),
+  index: PropTypes.number,
 };

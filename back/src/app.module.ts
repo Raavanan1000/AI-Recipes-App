@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import validationSchema from './config/validation';
 import { UsersModule } from './users/users.module';
 import { FavouritesModule } from './favourites/favourites.module';
+import { RecipesModule } from './recipes/recipes.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { FavouritesModule } from './favourites/favourites.module';
     UsersModule,
     AuthModule,
     FavouritesModule,
+    RecipesModule,
   ],
 })
 export class AppModule {}

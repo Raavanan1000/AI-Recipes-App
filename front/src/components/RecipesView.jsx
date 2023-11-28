@@ -1,6 +1,4 @@
-import { useState, useRef, useEffect, useContext } from "react";
-import Message from "./Message";
-import { ChatContext } from "../context/chatContext";
+import { useState, useRef, useEffect } from "react";
 import Thinking from "./Thinking";
 import { MdSend } from "react-icons/md";
 import { replaceProfanities } from "no-profanity";
@@ -28,19 +26,13 @@ const RecipesView = () => {
     },
   ]);
 
-  const messagesEndRef = useRef();
   const inputRef = useRef();
   const [formValue, setFormValue] = useState("");
-  const [thinking, setThinking] = useState(false);
+  const [loading, isLoading] = useState(false);
   const { recipes, setRecipes } = useRecipeContext();
 
   const [takeIntoAccountAllergies, setTakeIntoAccountAllergies] =
     useState(true);
-  const [messages, addMessage] = useContext(ChatContext);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   const updateRecipes = (newRecipes) => {
     setRecipes(newRecipes);
@@ -55,7 +47,7 @@ const RecipesView = () => {
 
     const cleanPrompt = replaceProfanities(formValue);
 
-    setThinking(true);
+    isLoading(true);
     setFormValue("");
     updateRecipeSearch(cleanPrompt);
 
@@ -67,7 +59,7 @@ const RecipesView = () => {
       window.alert(`Error: ${err} please try again later`);
     }
 
-    setThinking(false);
+    isLoading(false);
   };
 
   const handleKeyDown = (e) => {
@@ -77,16 +69,12 @@ const RecipesView = () => {
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, thinking]);
-
-  useEffect(() => {
     inputRef.current && inputRef.current.focus();
   }, []);
 
   return (
     <main className="w-screen flex flex-col h-screen p-1 overflow-scroll dark:bg-light-grey">
-      {!recipes?.length > 0 && (
+      {!recipes?.length > 0 && !loading && (
         <>
           <div className="mx-auto my-4 tabs tabs-boxed w-fit">
             <a
@@ -104,32 +92,24 @@ const RecipesView = () => {
           </div>
 
           <section className="flex flex-col flex-grow w-full px-4 overflow-y-scroll sm:px-10 md:px-32">
-            {messages.length ? (
-              messages.map((message, index) => (
-                <Message key={index} message={{ ...message }} />
-              ))
-            ) : (
-              <div className="flex my-2">
-                <div className="w-screen overflow-hidden">
-                  <ul className="grid grid-cols-2 gap-2 mx-10">
-                    {recommendations.map((item, index) => (
-                      <li
-                        onClick={() => setFormValue(item.prompt)}
-                        key={index}
-                        className="p-6 border rounded-lg border-slate-300 hover:border-slate-500"
-                      >
-                        <p className="text-base font-semibold">{item.title}</p>
-                        <p className="text-sm">{item.prompt}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            <div className="flex my-2">
+              <div className="w-screen overflow-hidden">
+                <ul className="grid grid-cols-2 gap-2 mx-10">
+                  {recommendations.map((item, index) => (
+                    <li
+                      onClick={() => setFormValue(item.prompt)}
+                      key={index}
+                      className="p-6 border rounded-lg border-slate-300 hover:border-slate-500"
+                    >
+                      <p className="text-base font-semibold">{item.title}</p>
+                      <p className="text-sm">{item.prompt}</p>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            )}
+            </div>
 
-            {thinking && <Thinking />}
-
-            <span ref={messagesEndRef}></span>
+            {loading && <Thinking />}
           </section>
           <form
             className="flex flex-col px-10 mb-2 md:px-32 join sm:flex-row"

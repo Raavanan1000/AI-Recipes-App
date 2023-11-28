@@ -33,7 +33,10 @@ export default function Recipe({ recipe, index }) {
 
   return (
     <Card
-      sx={{ maxWidth: 345, backgroundColor: expanded ? orange[300] : "white" }}
+      sx={{
+        width: expanded ? "85%" : 345,
+        backgroundColor: expanded ? orange[300] : "white",
+      }}
     >
       <CardHeader
         avatar={

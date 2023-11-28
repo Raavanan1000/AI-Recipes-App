@@ -149,6 +149,17 @@ const RecipesView = () => {
           <p className="text-xl mb-10">
             {"Searched : " + localStorage.getItem("recipeSearch")}
           </p>
+
+          <button
+            className="mt-10 mb-10 bg-transparent hover:bg-gray-300 text-gray-600 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-600 hover:border-transparent rounded"
+            onClick={() => {
+              localStorage.removeItem("recipeSearch");
+              setRecipes([]);
+            }}
+          >
+            Search again
+          </button>
+
           <div className="flex w-full h-full justify-center items-center gap-3 flex-wrap">
             {recipes?.map((recipe, index) => (
               <Recipe key={index} recipe={recipe} index={index} />

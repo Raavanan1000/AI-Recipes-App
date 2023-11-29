@@ -1,5 +1,5 @@
+import { Twitter } from "@mui/icons-material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Share } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { orange } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
@@ -111,6 +111,17 @@ export default function RecipePage() {
     }
   };
 
+  function share() {
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      recipe.name +
+        "\n\nIngredients\n" +
+        recipe.ingredients.join("\n") +
+        "\n\nSteps\n" +
+        recipe.steps.join("\n")
+    )}`;
+    window.open(url, "_blank");
+  }
+
   return (
     <div className="p-9">
       <button
@@ -147,10 +158,10 @@ export default function RecipePage() {
               </IconButton>
               <IconButton
                 aria-label="Add to favorites"
-                // onClick={onClickFavorite}
+                onClick={share}
                 sx={{ color: "grey" }}
               >
-                <Share />
+                <Twitter />
               </IconButton>
             </div>
           </div>

@@ -1,12 +1,18 @@
-import { useState, useEffect } from "react";
-import { MdClose, MdMenu, MdOutlineRestartAlt } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  MdClose,
+  MdMenu,
+  MdOutlineRestartAlt,
+  MdOutlineExitToApp,
+} from "react-icons/md";
 import bot from "../assets/logo.svg";
-import ToggleTheme from "./ToggleTheme";
-import Modal from "./Modal";
-import Setting from "./Setting";
 import { useRecipeContext } from "../context/recipeContext";
+import { useUser } from "../context/userContext";
 
 const SideBar = () => {
+  const { setUser } = useUser();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -23,6 +29,12 @@ const SideBar = () => {
   function clear() {
     localStorage.removeItem("recipeSearch");
     setRecipes([]);
+  }
+
+  function logout() {
+    localStorage.removeItem("accessToken");
+    setUser(null);
+    navigate("/login");
   }
 
   return (
@@ -61,12 +73,21 @@ const SideBar = () => {
 
       <ul className="absolute bottom-0 w-full gap-1 menu rounded-box">
         <li>
+          <div className="border border-slate-500" onClick={logout}>
+            <MdOutlineExitToApp size={15} />
+            <span>Logout</span>
+          </div>
+        </li>
+      </ul>
+
+      {/* <ul className="absolute bottom-0 w-full gap-1 menu rounded-box">
+        <li>
           <ToggleTheme open={open} />
         </li>
       </ul>
       <Modal title="Setting" modalOpen={modalOpen} setModalOpen={setModalOpen}>
         <Setting modalOpen={modalOpen} setModalOpen={setModalOpen} />
-      </Modal>
+      </Modal> */}
     </section>
   );
 };

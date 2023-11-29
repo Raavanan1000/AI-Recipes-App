@@ -3,6 +3,8 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import UserProvider from "./context/userContext";
 import UserLoader from "./components/UserLoader";
+import RecipePage from "./pages/RecipePage";
+import RecipesView from "./components/RecipesView";
 
 const App = () => {
   return (
@@ -17,7 +19,10 @@ const App = () => {
                 <HomePage />
               </UserLoader>
             }
-          />
+          >
+            <Route index element={<RecipesView />} />
+            <Route path="recipes/:id" element={<RecipePage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </UserProvider>

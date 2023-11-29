@@ -53,7 +53,7 @@ const RecipesView = () => {
   }, []);
 
   return (
-    <main className="w-screen flex flex-col h-screen p-1 overflow-scroll dark:bg-light-grey">
+    <>
       {loading && (
         <>
           <div className="flex h-screen justify-center items-center">
@@ -139,7 +139,7 @@ const RecipesView = () => {
           </div>
         </div>
       )}
-    </main>
+    </>
   );
 };
 

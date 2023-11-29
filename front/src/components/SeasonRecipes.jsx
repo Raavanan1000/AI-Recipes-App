@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import useApi from "../hooks/useApi";
+import { useNavigate } from "react-router-dom";
 
 export default function SeasonRecipes({ withAllergies = false }) {
+  const navigate = useNavigate();
   const api = useApi();
   const [recipes, setRecipes] = useState([]);
+
   useEffect(() => {
     async function getRecipes() {
       const res = await api.getRecipesByCurrentSeason();
@@ -18,8 +21,13 @@ export default function SeasonRecipes({ withAllergies = false }) {
       <div className="flex my-2">
         <div className="w-screen overflow-hidden">
           <ul className="grid grid-cols-2 gap-2 mx-10 cursor-pointer">
-            {recipes.map((item, index) => (
+            {recipes.map((item) => (
               <li
+                onClick={() => {
+                  navigate("/home/recipes/" + item.id, {
+                    state: { recipe: item },
+                  });
+                }}
                 key={item.id}
                 className="p-6 border rounded-lg border-slate-300 hover:border-slate-500"
               >

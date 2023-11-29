@@ -9,6 +9,8 @@ export class RecipesService {
   constructor(private prisma: PrismaService) {}
 
   async searchRecipe(user, query: string, considerAllergies: boolean) {
+    const allRecipes = await this.prisma.recipe.findMany({});
+    return allRecipes;
     let recommendedRecipes = [];
 
     console.log(considerAllergies);
@@ -114,7 +116,7 @@ export class RecipesService {
         name: true,
         ingredients: true,
       },
-      take: 30,
+      take: 28,
     });
 
     const userData = await this.prisma.user.findUnique({
@@ -126,11 +128,29 @@ export class RecipesService {
       },
     });
 
+    function getCurrentSeason() {
+      const now = new Date();
+      const month = now.getMonth() + 1;
+
+      if (month >= 3 && month <= 5) {
+        return 'Spring';
+      } else if (month >= 6 && month <= 8) {
+        return 'Summer';
+      } else if (month >= 9 && month <= 11) {
+        return 'Autumn';
+      } else {
+        return 'Winter';
+      }
+    }
+
+    const currentSeason = getCurrentSeason();
+
     const prompt = `Here are some recipes from our database : ${JSON.stringify(
       recipes,
     )}.
-    select the best recipe based on ingredients seasonality (current season) and return only an array of id's of the matching recipes. the format of the response should be an array of id's like ["1", "2", "3"], if no recipes matches, return an empty array like [], the returned response from you should always be just an array either empty or not without any additional characters`;
+    from the given recipes select 4 recipes for the season ${currentSeason} and return only an array of id's of the matching recipes. the format of the response should be an array of id's of the recipe like ["1", "2", "3"], if no recipes matches, return an empty array like [], the returned response from you should always be just an array either empty or not without any additional text or characters`;
 
+    console.log(prompt);
     if (considerAllergies && userData?.allergis?.length > 0) {
       const allergies =
         'take into account the allergies of the client, the client is allergic to ' +
@@ -171,24 +191,6 @@ export class RecipesService {
           take: 4,
         });
       }
-    }
-
-    if (recommendedRecipes.length > 0) {
-      recommendedRecipes = await Promise.all(
-        recommendedRecipes.map(async (recipe) => {
-          const favorite = await this.prisma.favouriteRecipe.findFirst({
-            where: {
-              userId: userId,
-              recipeId: recipe.id,
-            },
-          });
-
-          return {
-            ...recipe,
-            favorite: !!favorite,
-          };
-        }),
-      );
     }
 
     return recommendedRecipes;

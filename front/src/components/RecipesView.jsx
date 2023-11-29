@@ -5,7 +5,7 @@ import Recipe from "./Recipe";
 import { useRecipeContext } from "../context/recipeContext";
 import useApi from "../hooks/useApi";
 import SeasonRecipes from "./SeasonRecipes";
-import { wait } from "../utils/tools";
+import toast, { Toaster } from "react-hot-toast";
 
 const RecipesView = () => {
   const inputRef = useRef();
@@ -15,15 +15,19 @@ const RecipesView = () => {
 
   const api = useApi();
 
+  const notify = (msg) => toast.error(msg);
+
   const searchRecipes = async () => {
     isLoading(true);
-
-    await wait(3000);
 
     updateRecipeSearch(formValue);
     try {
       const response = await api.getRecipes(formValue);
       setRecipes(response.data);
+
+      if (response.data.length === 0) {
+        notify("No recipes found, try again");
+      }
     } catch (err) {
       window.alert(`Error: ${err} please try again later`);
     } finally {
@@ -57,6 +61,7 @@ const RecipesView = () => {
           </div>
         </>
       )}
+      <Toaster />
       {!recipes?.length > 0 && !loading && (
         <>
           <div className="mx-auto my-4 tabs tabs-boxed w-fit">
@@ -121,6 +126,7 @@ const RecipesView = () => {
             onClick={() => {
               localStorage.removeItem("recipeSearch");
               setRecipes([]);
+              setFormValue("");
             }}
           >
             Search again

@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 
 async function resetDB() {
   await prisma.favouriteRecipe.deleteMany({});
+  await prisma.comments.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.recipe.deleteMany({});
 }

@@ -21,7 +21,7 @@ export default function Comments({ recipeId }) {
 
   const inputRef = useRef();
 
-  const notify = (msg) => toast.error(msg);
+  const notify = (msg) => toast(msg);
 
   const getComments = async () => {
     try {
@@ -39,9 +39,10 @@ export default function Comments({ recipeId }) {
         comment,
         recipeId,
       };
-      await api.addComment(data);
+      const response = await api.addComment(data);
+      notify("Comment posted");
       setComment("");
-      setComments([...comments, { comment }]);
+      setComments([...comments, { ...response.data }]);
     } catch (err) {
       notify("Error while posting comment");
     }
@@ -102,7 +103,10 @@ export default function Comments({ recipeId }) {
             className="flex w-full items-center justify-between text-base mt-5 shadow-sm"
             key={comment.id}
           >
-            {comment.comment}
+            <div className="flex w-full items-center justify-between">
+              <p>{comment.comment}</p>
+              <p>{new Date(comment.createdAt).toDateString()}</p>
+            </div>
             <div
               className="hover: btn-ghost p-6"
               onClick={(e) => {

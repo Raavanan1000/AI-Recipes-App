@@ -17,6 +17,7 @@ import useApi from "../hooks/useApi";
 import toast, { Toaster } from "react-hot-toast";
 import { useFavoriteContext } from "../context/favoriteContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -43,6 +44,17 @@ export default function Recipe({ recipe, index }) {
 
   const { favorite, setFavorite } = useFavoriteContext();
 
+  useEffect(() => {
+    const alreadyFavorite = favorite.find((fav) => fav.recipeId === recipe.id);
+    if (alreadyFavorite) {
+      setIsFavorite(true);
+    }
+
+    if (!alreadyFavorite) {
+      setIsFavorite(false);
+    }
+  }, [favorite, recipe.id]);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -54,10 +66,14 @@ export default function Recipe({ recipe, index }) {
       };
       const response = await api.addFavorites(data);
 
-      console.log(recipe);
+      const newFavorite = {
+        ...response.data,
+        recipe: { ...recipe },
+      };
+
       const newData = {
         ...favorite,
-        recipe,
+        ...newFavorite,
       };
 
       setFavorite([...favorite, newData]);
@@ -80,15 +96,10 @@ export default function Recipe({ recipe, index }) {
   return (
     <Card
       sx={{
-        width: expanded ? "85%" : 345,
-        height: expanded ? "100%" : "34rem",
+        width: 345,
+        height: "auto",
         backgroundColor: expanded ? orange[300] : "white",
         cursor: "pointer",
-      }}
-      onClick={() => {
-        navigate("/home/recipes/" + recipe.id, {
-          state: { recipe: recipe },
-        });
       }}
     >
       <CardHeader
@@ -104,6 +115,11 @@ export default function Recipe({ recipe, index }) {
       />
       <CardMedia
         component="img"
+        onClick={() => {
+          navigate("/home/recipes/" + recipe.id, {
+            state: { recipe: recipe },
+          });
+        }}
         sx={{
           height: 345,
           objectFit: "cover",
@@ -135,14 +151,14 @@ export default function Recipe({ recipe, index }) {
         >
           View recipe
         </div>
-        {/* <ExpandMore
+        <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="Expand"
         >
           <ExpandMoreIcon />
-        </ExpandMore> */}
+        </ExpandMore>
       </CardActions>
       <CardContent>
         <Typography variant="body2" color="text.secondary">

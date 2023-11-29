@@ -16,6 +16,7 @@ import PropTypes from "prop-types";
 import useApi from "../hooks/useApi";
 import toast, { Toaster } from "react-hot-toast";
 import { useFavoriteContext } from "../context/favoriteContext";
+import { useNavigate } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,6 +31,8 @@ const ExpandMore = styled((props) => {
 
 export default function Recipe({ recipe, index }) {
   const [expanded, setExpanded] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const [isFavorite, setIsFavorite] = React.useState(false);
 
@@ -116,6 +119,16 @@ export default function Recipe({ recipe, index }) {
         >
           <FavoriteIcon />
         </IconButton>
+        <div
+          className="btn btn-ghost"
+          onClick={() => {
+            navigate("/home/recipes/" + recipe.id, {
+              state: { recipe: recipe },
+            });
+          }}
+        >
+          View recipe
+        </div>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

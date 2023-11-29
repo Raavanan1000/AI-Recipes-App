@@ -37,7 +37,6 @@ const SideBar = () => {
     handleResize();
   }, []);
 
-  console.log(favorite);
   function clear() {
     localStorage.removeItem("recipeSearch");
     setRecipes([]);
@@ -60,7 +59,6 @@ const SideBar = () => {
     try {
       const response = await api.deleteFavorite(id);
 
-      console.log(response);
       if (response.status === 200) {
         notifySuccess("Favorite deleted");
         getFavorites();

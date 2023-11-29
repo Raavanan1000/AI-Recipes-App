@@ -86,6 +86,10 @@ export default function useApi() {
     return apiClient.patch("users/current", { allergy }, token);
   }
 
+  function searchRecipeAccompaniment(recipeId) {
+    return apiClient.get("recipes/" + recipeId + "/accompaniments", token);
+  }
+
   return {
     login,
     addFavorites,
@@ -96,5 +100,6 @@ export default function useApi() {
     getRecipes,
     getRecipesByCurrentSeason,
     addAllergy,
+    searchRecipeAccompaniment,
   };
 }

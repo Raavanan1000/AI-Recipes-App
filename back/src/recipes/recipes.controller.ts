@@ -28,6 +28,11 @@ export class RecipesController {
     );
   }
 
+  @Get(':id/accompaniments')
+  async searchAccompaniments(@Param('id') id: string) {
+    return await this.recipesService.searchRecipeAccompaniments(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.recipesService.findOne(id);

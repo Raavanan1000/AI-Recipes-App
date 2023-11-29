@@ -90,7 +90,7 @@ const RecipesView = () => {
             onSubmit={searchRecipes}
           >
             <select
-              value={"Chat"}
+              // value={"Chat"}
               className="w-full sm:w-40 select select-bordered join-item"
             >
               <option>{"Ask recipe"}</option>

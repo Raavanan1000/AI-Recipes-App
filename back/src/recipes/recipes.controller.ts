@@ -18,8 +18,14 @@ export class RecipesController {
   }
 
   @Get('season')
-  async searchByCurrentSeason() {
-    return await this.recipesService.searchByCurrentSeason();
+  async searchByCurrentSeason(
+    @Param('withAllergies') considerAllergies: boolean,
+    @LoggedInUser() user,
+  ) {
+    return await this.recipesService.searchByCurrentSeason(
+      user.id,
+      considerAllergies,
+    );
   }
 
   @Get(':id')

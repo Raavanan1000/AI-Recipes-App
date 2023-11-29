@@ -63,6 +63,18 @@ export default function useApi() {
     return apiClient.delete(`favourites/${id}`, token);
   }
 
+  function addComment(data) {
+    return apiClient.post("comments", { ...data }, token);
+  }
+
+  function getComments(recipeId) {
+    return apiClient.get(`comments/${recipeId}`, token);
+  }
+
+  function deleteComment(id) {
+    return apiClient.delete(`comments/${id}`, token);
+  }
+
   function searchRecipe(search) {
     return apiClient.get(`recipes/${search}`, token);
   }
@@ -98,6 +110,9 @@ export default function useApi() {
     login,
     addFavorites,
     getFavorites,
+    addComment,
+    getComments,
+    deleteComment,
     deleteFavorite,
     searchRecipe,
     getLoggedInUser,

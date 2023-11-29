@@ -21,6 +21,7 @@ model User {
   updatedAt  DateTime          @updatedAt
   favourites FavouriteRecipe[]
   allergis   String[]
+  Comments   Comments[]
 }
 
 model Recipe {
@@ -31,6 +32,16 @@ model Recipe {
   steps           String[]
   image           String
   FavouriteRecipe FavouriteRecipe[]
+  Comments        Comments[]
+}
+
+model Comments {
+  id       String @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id])
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  userId   String
+  recipeId String
+  comment  String
 }
 
 model FavouriteRecipe {

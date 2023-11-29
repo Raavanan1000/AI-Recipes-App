@@ -5,6 +5,7 @@ import validationSchema from './config/validation';
 import { UsersModule } from './users/users.module';
 import { FavouritesModule } from './favourites/favourites.module';
 import { RecipesModule } from './recipes/recipes.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RecipesModule } from './recipes/recipes.module';
     AuthModule,
     FavouritesModule,
     RecipesModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

@@ -13,6 +13,8 @@ import { orange } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PropTypes from "prop-types";
+import useApi from "../hooks/useApi";
+import toast, { Toaster } from "react-hot-toast";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -28,8 +30,34 @@ const ExpandMore = styled((props) => {
 export default function Recipe({ recipe, index }) {
   const [expanded, setExpanded] = React.useState(false);
 
+  const api = useApi();
+
+  const notifyError = (msg) => toast.error(msg);
+  const notifySuccess = (msg) => toast.success(msg);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const onClickFavorite = async () => {
+    try {
+      const data = {
+        recipeId: recipe.id,
+      };
+      const response = await api.addFavorites(data);
+
+      console.log(response);
+      if (response.status === 201) {
+        notifySuccess("Recipe added to favorites");
+      }
+    } catch (error) {
+      const { response } = error;
+      if (response.status === 409) {
+        notifyError("Recipe already in favorites");
+        return;
+      }
+      notifyError("Could not add recipe to favorites");
+    }
   };
 
   return (
@@ -63,7 +91,7 @@ export default function Recipe({ recipe, index }) {
         alt="food"
       />
       <CardActions disableSpacing>
-        <IconButton aria-label="Add to favorites">
+        <IconButton aria-label="Add to favorites" onClick={onClickFavorite}>
           <FavoriteIcon />
         </IconButton>
         <ExpandMore
@@ -100,6 +128,7 @@ export default function Recipe({ recipe, index }) {
 
 Recipe.propTypes = {
   recipe: PropTypes.shape({
+    id: PropTypes.string,
     name: PropTypes.string,
     image: PropTypes.string,
     description: PropTypes.string,

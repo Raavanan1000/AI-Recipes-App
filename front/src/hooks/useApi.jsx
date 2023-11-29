@@ -52,15 +52,15 @@ export default function useApi() {
   }
 
   function addFavorites(data) {
-    return apiClient.post("favorites", { ...data }, token);
+    return apiClient.post("favourites", { ...data }, token);
   }
 
   function getFavorites() {
-    return apiClient.get("favorites", token);
+    return apiClient.get("favourites", token);
   }
 
   function deleteFavorite(id) {
-    return apiClient.delete(`favorites/${id}`, token);
+    return apiClient.delete(`favourites/${id}`, token);
   }
 
   function searchRecipe(search) {

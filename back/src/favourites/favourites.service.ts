@@ -1,11 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class FavouritesService {
   constructor(private prisma: PrismaService) {}
 
-  create(recipeId: string, userId: string) {
+  async create(recipeId: string, userId: string) {
+    const recipe = await this.prisma.favouriteRecipe.findFirst({
+      where: {
+        userId: userId,
+        recipeId: recipeId,
+      },
+    });
+
+    if (recipe) {
+      throw new ConflictException();
+    }
+
     return this.prisma.favouriteRecipe.create({ data: { recipeId, userId } });
   }
 

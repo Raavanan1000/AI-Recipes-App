@@ -82,6 +82,10 @@ export default function useApi() {
     return apiClient.get(url, token);
   }
 
+  function addAllergy(allergy) {
+    return apiClient.patch("users/current", { allergy }, token);
+  }
+
   return {
     login,
     addFavorites,
@@ -91,5 +95,6 @@ export default function useApi() {
     getLoggedInUser,
     getRecipes,
     getRecipesByCurrentSeason,
+    addAllergy,
   };
 }

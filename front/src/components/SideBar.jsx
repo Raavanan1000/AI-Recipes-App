@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   MdClose,
   MdMenu,
   MdOutlineRestartAlt,
   MdOutlineExitToApp,
   MdDelete,
+  MdOutlineHealthAndSafety,
 } from "react-icons/md";
 import bot from "../assets/logo.svg";
 import { useRecipeContext } from "../context/recipeContext";
@@ -104,6 +105,15 @@ const SideBar = () => {
               {!recipes.length > 0 ? "Ask recipe" : "Reset"}
             </p>
           </a>
+        </li>
+      </ul>
+
+      <ul className="w-full menu rounded-box">
+        <li>
+          <Link className="border border-slate-500" to="/home/allergies">
+            <MdOutlineHealthAndSafety size={15} />
+            <p>My Allergies</p>
+          </Link>
         </li>
       </ul>
 

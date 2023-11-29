@@ -19,6 +19,7 @@ async function insertUsers() {
         email: 'user1@dev.fr',
         password: hashedPassword,
         role: 'USER',
+        allergis: ['milk', 'eggs', 'soy'],
       },
       {
         firstname: 'John',
@@ -26,6 +27,7 @@ async function insertUsers() {
         email: 'user2@dev.fr',
         password: hashedPassword,
         role: 'USER',
+        allergis: ['fish', 'eggs', 'soy'],
       },
       {
         firstname: 'Sonia',
@@ -33,6 +35,7 @@ async function insertUsers() {
         email: 'user3@dev.fr',
         password: hashedPassword,
         role: 'USER',
+        allergis: ['arugula', 'avocado', 'barberry'],
       },
     ],
   });

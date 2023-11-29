@@ -44,7 +44,12 @@ export class UsersService {
       where: {
         id: id,
       },
-      data,
+      data: {
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        allergis: { push: data.allergy },
+      },
     });
   }
 

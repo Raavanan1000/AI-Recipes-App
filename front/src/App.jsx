@@ -5,6 +5,7 @@ import UserProvider from "./context/userContext";
 import UserLoader from "./components/UserLoader";
 import RecipePage from "./pages/RecipePage";
 import RecipesView from "./components/RecipesView";
+import AllergiesPage from "./pages/AllergiesPage";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             }
           >
             <Route index element={<RecipesView />} />
+            <Route path="allergies" element={<AllergiesPage />} />
             <Route path="recipes/:id" element={<RecipePage />} />
           </Route>
         </Routes>

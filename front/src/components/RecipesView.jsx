@@ -29,7 +29,7 @@ const RecipesView = () => {
         notify("No recipes found, try again");
       }
     } catch (err) {
-      window.alert(`Error: ${err} please try again later`);
+      notify("Error while searching recipes");
     } finally {
       isLoading(false);
     }

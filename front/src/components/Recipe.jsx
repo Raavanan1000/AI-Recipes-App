@@ -91,7 +91,11 @@ export default function Recipe({ recipe, index }) {
         alt="food"
       />
       <CardActions disableSpacing>
-        <IconButton aria-label="Add to favorites" onClick={onClickFavorite}>
+        <IconButton
+          aria-label="Add to favorites"
+          onClick={onClickFavorite}
+          sx={recipe.favorite ? { color: orange[600] } : { color: "grey" }}
+        >
           <FavoriteIcon />
         </IconButton>
         <ExpandMore
@@ -131,6 +135,7 @@ Recipe.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     image: PropTypes.string,
+    favorite: PropTypes.bool,
     description: PropTypes.string,
     ingredients: PropTypes.arrayOf(PropTypes.string),
     steps: PropTypes.arrayOf(PropTypes.string),

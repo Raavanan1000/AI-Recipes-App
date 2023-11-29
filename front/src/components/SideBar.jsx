@@ -41,6 +41,7 @@ const SideBar = () => {
   function clear() {
     localStorage.removeItem("recipeSearch");
     setRecipes([]);
+    navigate("/home");
   }
 
   function logout() {

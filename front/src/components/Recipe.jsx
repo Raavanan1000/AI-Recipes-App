@@ -83,6 +83,12 @@ export default function Recipe({ recipe, index }) {
         width: expanded ? "85%" : 345,
         height: expanded ? "100%" : "34rem",
         backgroundColor: expanded ? orange[300] : "white",
+        cursor: "pointer",
+      }}
+      onClick={() => {
+        navigate("/home/recipes/" + recipe.id, {
+          state: { recipe: recipe },
+        });
       }}
     >
       <CardHeader
@@ -129,14 +135,14 @@ export default function Recipe({ recipe, index }) {
         >
           View recipe
         </div>
-        <ExpandMore
+        {/* <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="Expand"
         >
           <ExpandMoreIcon />
-        </ExpandMore>
+        </ExpandMore> */}
       </CardActions>
       <CardContent>
         <Typography variant="body2" color="text.secondary">

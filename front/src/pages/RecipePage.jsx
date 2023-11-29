@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { useFavoriteContext } from "../context/favoriteContext";
 import useApi from "../hooks/useApi";
+import Comments from "../components/Comments";
 
 export default function RecipePage() {
   const navigate = useNavigate();
@@ -228,6 +229,9 @@ export default function RecipePage() {
             ))}
           </ul>
         </div>
+      </div>
+      <div className="w-full h-full mt-10 p-10">
+        <Comments recipeId={recipe.id} />
       </div>
     </div>
   );

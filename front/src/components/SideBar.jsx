@@ -164,7 +164,7 @@ const SideBar = () => {
         <li>
           <div className="border border-slate-500" onClick={logout}>
             <MdOutlineExitToApp size={15} />
-            <span>Logout</span>
+            {open && <span>Logout</span>}
           </div>
         </li>
       </ul>

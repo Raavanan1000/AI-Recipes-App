@@ -226,4 +226,35 @@ export class RecipesService {
       return [];
     }
   }
+
+  async searchRecipeShoppings(recipeId: string) {
+    const recipe = await this.prisma.recipe.findUnique({
+      where: { id: recipeId },
+    });
+
+    if (!recipe) {
+      return [];
+    }
+
+    const prompt = `from this recipe ingredients generate a shopping list, here is the ingredients: ${JSON.stringify(
+      recipe.ingredients.join(' , '),
+    )}. the format of the response should be a json of shopping titles without root key, if no shopping, return an empty array like [], the returned response from you should always be just an array either empty or not without any additional characters`;
+
+    try {
+      const res = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: prompt,
+          },
+        ],
+      });
+
+      return res?.choices[0]?.message?.content ?? [];
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
 }

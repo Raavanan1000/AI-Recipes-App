@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
-import useApi from "../hooks/useApi";
 import Loader from "../components/Loader";
+import useApi from "../hooks/useApi";
 
 export default function RecipePage() {
   const navigate = useNavigate();
@@ -11,16 +12,49 @@ export default function RecipePage() {
   const [loading, setLoading] = useState(false);
   const [accompaniments, setccompaniments] = useState([]);
 
+  const [shopping, setShopping] = useState([]);
+  const [searchingShopping, setSearchingShopping] = useState(false);
+
+  useEffect(() => {
+    setShopping([]);
+    setccompaniments([]);
+  }, [recipe.id]);
+
   async function handleClick() {
     try {
       setLoading(true);
       const res = await api.searchRecipeAccompaniment(recipe.id);
-      setccompaniments(res.data);
+      if (!Array.isArray(res.data)) {
+        setccompaniments([]);
+      } else {
+        setccompaniments(res.data);
+      }
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
+  }
+
+  async function getShopping() {
+    try {
+      setSearchingShopping(true);
+      const res = await api.searchShopping(recipe.id);
+      if (!Array.isArray(res.data)) {
+        setShopping([]);
+      } else {
+        setShopping(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSearchingShopping(false);
+    }
+  }
+
+  async function copyshopping() {
+    navigator.clipboard.writeText(shopping.join("\n"));
+    toast.success("Copied!");
   }
 
   return (
@@ -46,6 +80,36 @@ export default function RecipePage() {
           <div className="ml-4 relative">
             <h1 className="text-3xl">{recipe.name}</h1>
             <p className="text-base mt-5 max-w-xs">{recipe.description}</p>
+          </div>
+          <div className="ml-20 flex flex-col items-start">
+            <button
+              className="px-2 py-3 bg-neutral rounded-lg mb-7 w-28 [&>div]:bg-transparent"
+              type="button"
+              onClick={getShopping}
+            >
+              {searchingShopping ? <Loader /> : "Shopping list"}
+            </button>
+            <div className="flex flex-row gap-x-3 gap-y-5 flex-wrap max-w-md max-h-48 overflow-auto">
+              {shopping.map((name, i) => (
+                <span
+                  className="border border-slate-500 px-5 py-1 rounded-full max-w-fit"
+                  key={i}
+                >
+                  {name}
+                </span>
+              ))}
+            </div>
+            {shopping.length === 0 ? null : (
+              <div>
+                <button
+                  className="text-white font-bold px-4 py-2 self-center bg-[#ff9500] rounded-lg mt-5 hover:opacity-70"
+                  type="button"
+                  onClick={copyshopping}
+                >
+                  Copy
+                </button>
+              </div>
+            )}
           </div>
         </div>
         <button

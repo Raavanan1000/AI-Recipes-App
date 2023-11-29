@@ -33,6 +33,11 @@ export class RecipesController {
     return await this.recipesService.searchRecipeAccompaniments(id);
   }
 
+  @Get(':id/shoppings')
+  async searchShoppings(@Param('id') id: string) {
+    return await this.recipesService.searchRecipeShoppings(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.recipesService.findOne(id);

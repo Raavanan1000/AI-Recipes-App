@@ -90,6 +90,10 @@ export default function useApi() {
     return apiClient.get("recipes/" + recipeId + "/accompaniments", token);
   }
 
+  function searchShopping(recipeId) {
+    return apiClient.get("recipes/" + recipeId + "/shoppings", token);
+  }
+
   return {
     login,
     addFavorites,
@@ -101,5 +105,6 @@ export default function useApi() {
     getRecipesByCurrentSeason,
     addAllergy,
     searchRecipeAccompaniment,
+    searchShopping,
   };
 }

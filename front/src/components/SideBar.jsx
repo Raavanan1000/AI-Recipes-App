@@ -111,12 +111,12 @@ const SideBar = () => {
         <li>
           <Link className="border border-slate-500" to="/home/allergies">
             <MdOutlineHealthAndSafety size={15} />
-            <p>My Allergies</p>
+            {open && <p>My Allergies</p>}
           </Link>
         </li>
       </ul>
 
-      <h1 className="text-2xl font-bold text-center">Favorites</h1>
+      {open && <h1 className="text-2xl font-bold text-center">Favorites</h1>}
 
       {open && favorite?.length > 0 && (
         <div className="h-96 overflow-scroll w-full">
@@ -168,15 +168,6 @@ const SideBar = () => {
           </div>
         </li>
       </ul>
-
-      {/* <ul className="absolute bottom-0 w-full gap-1 menu rounded-box">
-        <li>
-          <ToggleTheme open={open} />
-        </li>
-      </ul>
-      <Modal title="Setting" modalOpen={modalOpen} setModalOpen={setModalOpen}>
-        <Setting modalOpen={modalOpen} setModalOpen={setModalOpen} />
-      </Modal> */}
     </section>
   );
 };

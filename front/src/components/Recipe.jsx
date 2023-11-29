@@ -15,6 +15,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PropTypes from "prop-types";
 import useApi from "../hooks/useApi";
 import toast, { Toaster } from "react-hot-toast";
+import { useFavoriteContext } from "../context/favoriteContext";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,10 +31,14 @@ const ExpandMore = styled((props) => {
 export default function Recipe({ recipe, index }) {
   const [expanded, setExpanded] = React.useState(false);
 
+  const [isFavorite, setIsFavorite] = React.useState(false);
+
   const api = useApi();
 
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
+
+  const { favorite, setFavorite } = useFavoriteContext();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -45,6 +50,15 @@ export default function Recipe({ recipe, index }) {
         recipeId: recipe.id,
       };
       const response = await api.addFavorites(data);
+
+      console.log(recipe);
+      const newData = {
+        ...favorite,
+        recipe,
+      };
+
+      setFavorite([...favorite, newData]);
+      setIsFavorite(true);
 
       console.log(response);
       if (response.status === 201) {
@@ -94,7 +108,11 @@ export default function Recipe({ recipe, index }) {
         <IconButton
           aria-label="Add to favorites"
           onClick={onClickFavorite}
-          sx={recipe.favorite ? { color: orange[600] } : { color: "grey" }}
+          sx={
+            recipe.favorite || isFavorite
+              ? { color: orange[600] }
+              : { color: "grey" }
+          }
         >
           <FavoriteIcon />
         </IconButton>

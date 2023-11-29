@@ -1,4 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
+import { string } from 'joi';
+import { async } from 'rxjs';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -10,6 +12,9 @@ export class FavouritesService {
       where: {
         userId: userId,
         recipeId: recipeId,
+      },
+      select: {
+        recipe: true,
       },
     });
 

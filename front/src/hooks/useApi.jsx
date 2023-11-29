@@ -67,8 +67,8 @@ export default function useApi() {
     return apiClient.get(`recipes/${search}`, token);
   }
 
-  function getRecipes(query) {
-    return apiClient.post(`recipes/`, { query: query }, token);
+  function getRecipes(query, considerAllergies) {
+    return apiClient.post(`recipes/`, { query, considerAllergies }, token);
   }
 
   function getLoggedInUser() {

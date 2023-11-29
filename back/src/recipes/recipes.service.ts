@@ -8,9 +8,10 @@ const openai = new OpenAI();
 export class RecipesService {
   constructor(private prisma: PrismaService) {}
 
-  async searchRecipe(user, query: string) {
+  async searchRecipe(user, query: string, considerAllergies: boolean) {
     let recommendedRecipes = [];
 
+    console.log(considerAllergies);
     const recipes = await this.prisma.recipe.findMany({
       select: {
         id: true,
@@ -20,7 +21,14 @@ export class RecipesService {
       take: 28,
     });
 
-    const userData: any = {};
+    const userData = await this.prisma.user.findUnique({
+      where: {
+        id: user.id,
+      },
+      select: {
+        allergis: true,
+      },
+    });
 
     const prompt = `Here are some recipes from our database : ${JSON.stringify(
       recipes,
@@ -29,9 +37,10 @@ export class RecipesService {
       query,
     )}. the format of the response should be an array of id's like ["1", "2", "3"], if no recipes matches, return an empty array like [], the returned response from you should always be just an array either empty or not without any additional characters`;
 
-    if (userData?.allergis?.length > 0) {
+    if (considerAllergies && userData?.allergis?.length > 0) {
       const allergies =
-        'the client is allergic to ' + userData.allergis.join(', ');
+        'take into account the allergies of the client, the client is allergic to ' +
+        userData.allergis.join(', ');
       prompt.concat(allergies);
     }
 

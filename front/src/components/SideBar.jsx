@@ -115,7 +115,8 @@ const SideBar = () => {
             {favorite.map((favorite) => (
               <div
                 key={favorite.id}
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   navigate("/home/recipes/" + favorite.recipeId, {
                     state: { recipe: favorite.recipe },
                   });
@@ -129,7 +130,8 @@ const SideBar = () => {
                     <p>{favorite.recipe.name.slice(0, 14)}</p>
                     <div
                       className="hover: btn-ghost"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         onClickDelete(favorite.id);
                       }}
                     >

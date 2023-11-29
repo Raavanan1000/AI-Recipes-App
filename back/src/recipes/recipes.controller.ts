@@ -9,9 +9,12 @@ export class RecipesController {
   constructor(private readonly recipesService: RecipesService) {}
 
   @Post()
-  searchRecipe(@Body() body: { query: string }, @LoggedInUser() user) {
-    const { query } = body;
-    return this.recipesService.searchRecipe(user, query);
+  searchRecipe(
+    @Body() body: { query: string; considerAllergies: boolean },
+    @LoggedInUser() user,
+  ) {
+    const { query, considerAllergies } = body;
+    return this.recipesService.searchRecipe(user, query, considerAllergies);
   }
 
   @Get('season')

@@ -22,7 +22,10 @@ const RecipesView = () => {
 
     updateRecipeSearch(formValue);
     try {
-      const response = await api.getRecipes(formValue);
+      const response = await api.getRecipes(
+        formValue,
+        takeIntoAccountAllergies
+      );
       setRecipes(response.data);
 
       if (response.data.length === 0) {

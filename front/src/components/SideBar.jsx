@@ -113,7 +113,14 @@ const SideBar = () => {
         <div className="h-96 overflow-scroll w-full">
           <ul className="w-full menu rounded-box">
             {favorite.map((favorite) => (
-              <div key={favorite.id}>
+              <div
+                key={favorite.id}
+                onClick={() => {
+                  navigate("/home/recipes/" + favorite.recipeId, {
+                    state: { recipe: favorite.recipe },
+                  });
+                }}
+              >
                 <li>
                   <a
                     className="mb-3 border border-slate-500 justify-around"

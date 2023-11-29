@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Share } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { orange } from "@mui/material/colors";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
+import { useFavoriteContext } from "../context/favoriteContext";
 import useApi from "../hooks/useApi";
 
 export default function RecipePage() {
@@ -15,10 +20,25 @@ export default function RecipePage() {
   const [shopping, setShopping] = useState([]);
   const [searchingShopping, setSearchingShopping] = useState(false);
 
+  const { favorite, setFavorite } = useFavoriteContext();
+  const [isFavorite, setIsFavorite] = React.useState(false);
+
   useEffect(() => {
     setShopping([]);
     setccompaniments([]);
-  }, [recipe.id]);
+
+    const alreadyFavorite = favorite.find((fav) => fav.recipeId === recipe.id);
+    if (alreadyFavorite) {
+      setIsFavorite(true);
+    }
+
+    if (!alreadyFavorite) {
+      setIsFavorite(false);
+    }
+  }, [favorite, recipe.id]);
+
+  const notifyError = (msg) => toast.error(msg);
+  const notifySuccess = (msg) => toast.success(msg);
 
   async function handleClick() {
     try {
@@ -57,6 +77,39 @@ export default function RecipePage() {
     toast.success("Copied!");
   }
 
+  const onClickFavorite = async () => {
+    try {
+      const data = {
+        recipeId: recipe.id,
+      };
+      const response = await api.addFavorites(data);
+
+      const newFavorite = {
+        ...response.data,
+        recipe: { ...recipe },
+      };
+
+      const newData = {
+        ...favorite,
+        ...newFavorite,
+      };
+
+      setFavorite([...favorite, newData]);
+      setIsFavorite(true);
+
+      if (response.status === 201) {
+        notifySuccess("Recipe added to favorites");
+      }
+    } catch (error) {
+      const { response } = error;
+      if (response.status === 409) {
+        notifyError("Recipe already in favorites");
+        return;
+      }
+      notifyError("Could not add recipe to favorites");
+    }
+  };
+
   return (
     <div className="p-9">
       <button
@@ -70,13 +123,36 @@ export default function RecipePage() {
       </button>
       <div className="flex flex-col">
         <div className="flex">
-          <img
-            className="h-60 w-60 object-cover"
-            src={
-              recipe.image || "https://source.unsplash.com/random/345x194/?food"
-            }
-            alt="image"
-          />
+          <div className="flex flex-col">
+            <img
+              className="h-60 w-60 object-cover"
+              src={
+                recipe.image ||
+                "https://source.unsplash.com/random/345x194/?food"
+              }
+              alt="image"
+            />
+            <div className="flex flex-row mt-2">
+              <IconButton
+                aria-label="Add to favorites"
+                onClick={onClickFavorite}
+                sx={
+                  recipe.favorite || isFavorite
+                    ? { color: orange[600] }
+                    : { color: "grey" }
+                }
+              >
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton
+                aria-label="Add to favorites"
+                // onClick={onClickFavorite}
+                sx={{ color: "grey" }}
+              >
+                <Share />
+              </IconButton>
+            </div>
+          </div>
           <div className="ml-4 relative">
             <h1 className="text-3xl">{recipe.name}</h1>
             <p className="text-base mt-5 max-w-xs">{recipe.description}</p>

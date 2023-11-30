@@ -1,6 +1,6 @@
 import { MdComputer } from "react-icons/md";
 
-const Thinking = () => {
+const Thinking = ({ message = "Generating recipe..." }) => {
   return (
     <div className="flex items-end mt-4">
       <div className="avatar">
@@ -9,7 +9,7 @@ const Thinking = () => {
         </div>
       </div>
       <div className="chat chat-start ">
-        <div className="chat-bubble animate-pulse">Generating recipe...</div>
+        <div className="chat-bubble animate-pulse">{message}</div>
       </div>
     </div>
   );

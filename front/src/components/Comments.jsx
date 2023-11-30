@@ -68,7 +68,7 @@ export default function Comments({ recipeId }) {
 
   useEffect(() => {
     getComments();
-  }, []);
+  }, [recipeId]);
 
   return (
     <Card

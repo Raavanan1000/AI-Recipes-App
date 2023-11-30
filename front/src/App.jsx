@@ -6,6 +6,7 @@ import UserLoader from "./components/UserLoader";
 import RecipePage from "./pages/RecipePage";
 import RecipesView from "./components/RecipesView";
 import AllergiesPage from "./pages/AllergiesPage";
+import ChatView from "./components/ChatView";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           >
             <Route index element={<RecipesView />} />
             <Route path="allergies" element={<AllergiesPage />} />
+            <Route path="chatbot" element={<ChatView />} />
             <Route path="recipes/:id" element={<RecipePage />} />
           </Route>
         </Routes>

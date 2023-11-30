@@ -9,8 +9,6 @@ export class RecipesService {
   constructor(private prisma: PrismaService) {}
 
   async searchRecipe(user, query: string, considerAllergies: boolean) {
-    const allRecipes = await this.prisma.recipe.findMany({});
-    return allRecipes;
     let recommendedRecipes = [];
 
     console.log(considerAllergies);

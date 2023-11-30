@@ -8,6 +8,8 @@ import {
   MdDelete,
   MdOutlineHealthAndSafety,
 } from "react-icons/md";
+import { FaRobot } from "react-icons/fa";
+
 import bot from "../assets/logo.svg";
 import { useRecipeContext } from "../context/recipeContext";
 import { useUser } from "../context/userContext";
@@ -103,6 +105,20 @@ const SideBar = () => {
             <p className={`${!open && "hidden"}`}>
               {!recipes.length > 0 ? "Ask recipe" : "Reset"}
             </p>
+          </a>
+        </li>
+      </ul>
+
+      <ul className="w-full menu rounded-box">
+        <li>
+          <a
+            className="border border-slate-500"
+            onClick={() => {
+              navigate("/home/chatbot");
+            }}
+          >
+            <FaRobot size={15} />
+            <p className={`${!open && "hidden"}`}>{"Chatbot"}</p>
           </a>
         </li>
       </ul>
